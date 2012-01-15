@@ -12,10 +12,10 @@ class App extends unfiltered.filter.Plan {
   val logger = Logger(classOf[App])
   
   def intent = {
-    case GET(Path(p, _)) => 
+    case GET(Path(p)) => 
       logger.debug("GET %s" format p)
       view(Map.empty)(<p> What say you? </p>)
-    case POST(Path(p, Params(params, _))) =>
+    case POST(Path(p) & Params(params)) =>
       logger.debug("POST %s" format p)
       val vw = view(params)_
       val expected = for { 
