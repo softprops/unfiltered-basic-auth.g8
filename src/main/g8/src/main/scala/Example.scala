@@ -60,7 +60,7 @@ class Auth(authSvc: AuthService) extends unfiltered.filter.Plan {
   val Fail = Unauthorized ~> WWWAuthenticate("""Basic realm="/"""")
   def intent = {
     case r => r match { 
-      case BasicAuth(a, p) if(authSvc.verify(u, p)) => Pass
+      case BasicAuth(u, p) if(authSvc.verify(u, p)) => Pass
       case _ => Fail
     }
   }
