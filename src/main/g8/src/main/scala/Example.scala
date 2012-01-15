@@ -25,9 +25,9 @@ class App extends unfiltered.filter.Plan {
         word <- lookup("palindrome") is
           trimmed is 
           nonempty("Palindrome is empty") is
-          pred(palindrome) { s =>
+          pred(palindrome, { s =>
             "%s is not a palindrome".format(s)
-          } is
+          }) is
           required("missing palindrome")
       } yield vw(<p>Yup. { int.get } is an integer and { word.get } is a palindrome. </p>)
       expected(params) orFail { fails =>
@@ -60,10 +60,7 @@ class Auth(authSvc: AuthService) extends unfiltered.filter.Plan {
   val Fail = Unauthorized ~> WWWAuthenticate("""Basic realm="/"""")
   def intent = {
     case r => r match { 
-      case BasicAuth(a, _) => a match {
-        case (u, p) if(authSvc.verify(u, p)) => Pass
-        case _ => Fail
-      }
+      case BasicAuth(a, p) if(authSvc.verify(u, p)) => Pass
       case _ => Fail
     }
   }
